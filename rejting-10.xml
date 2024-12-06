@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dleplugin>
+	<name>Рейтинг 10</name>
+	<description>Рейтинг 10 Звёзд</description>
+	<icon></icon>
+	<version>1.0</version>
+	<dleversion>11.0</dleversion>
+	<versioncompare>greater</versioncompare>
+	<upgradeurl></upgradeurl>
+	<filedelete>0</filedelete>
+	<needplugin></needplugin>
+	<mnotice>0</mnotice>
+	<mysqlinstall><![CDATA[]]></mysqlinstall>
+	<mysqlupgrade><![CDATA[]]></mysqlupgrade>
+	<mysqlenable><![CDATA[]]></mysqlenable>
+	<mysqldisable><![CDATA[]]></mysqldisable>
+	<mysqldelete><![CDATA[]]></mysqldelete>
+	<phpinstall><![CDATA[]]></phpinstall>
+	<phpupgrade><![CDATA[]]></phpupgrade>
+	<phpenable><![CDATA[]]></phpenable>
+	<phpdisable><![CDATA[]]></phpdisable>
+	<phpdelete><![CDATA[]]></phpdelete>
+	<notice><![CDATA[]]></notice>
+	<file name="engine/modules/functions.php">
+		<operation action="replace">
+			<searchcode><![CDATA[function ShowRating($id, $rating, $vote_num, $allow = true) {
+	global $lang, $config, $row, $dle_module;
+
+	if( !$config['rating_type'] ) {
+		
+		if( $rating AND $vote_num ) $rating = round( ($rating / $vote_num), 0 );
+		else $rating = 0;
+		
+		if ($rating < 0 ) $rating = 0;
+		
+		if ($vote_num AND $dle_module == "showfull") {
+			
+			$shema_title = " itemprop=\"aggregateRating\" itemscope itemtype=\"https://schema.org/AggregateRating\"";
+			$shema_ratig = $rating;
+			$shema_ratig_title = str_replace("&amp;amp;", "&amp;",  htmlspecialchars( strip_tags( stripslashes( $row['title'] ) ), ENT_QUOTES, $config['charset'] ) );
+			$shema = "<meta itemprop=\"itemReviewed\" content=\"{$shema_ratig_title}\"><meta itemprop=\"worstRating\" content=\"1\"><meta itemprop=\"ratingCount\" content=\"{$vote_num}\"><meta itemprop=\"ratingValue\" content=\"{$shema_ratig}\"><meta itemprop=\"bestRating\" content=\"5\">";
+
+		} else {
+			$shema_title = "";
+			$shema = "";
+		}
+		
+		$rating = $rating * 20;
+	
+		if( !$allow ) {
+		
+			$rated = <<<HTML
+<div class="rating"{$shema_title}>
+		<ul class="unit-rating">
+		<li class="current-rating" style="width:{$rating}%;">{$rating}</li>
+		</ul>{$shema}
+</div>
+HTML;
+		
+			return $rated;
+		}
+	
+		$rated = <<<HTML
+<div id='ratig-layer-{$id}'>
+	<div class="rating"{$shema_title}>
+		<ul class="unit-rating">
+		<li class="current-rating" style="width:{$rating}%;">{$rating}</li>
+		<li><a href="#" title="{$lang['useless']}" class="r1-unit" onclick="doRate('1', '{$id}'); return false;">1</a></li>
+		<li><a href="#" title="{$lang['poor']}" class="r2-unit" onclick="doRate('2', '{$id}'); return false;">2</a></li>
+		<li><a href="#" title="{$lang['fair']}" class="r3-unit" onclick="doRate('3', '{$id}'); return false;">3</a></li>
+		<li><a href="#" title="{$lang['good']}" class="r4-unit" onclick="doRate('4', '{$id}'); return false;">4</a></li>
+		<li><a href="#" title="{$lang['excellent']}" class="r5-unit" onclick="doRate('5', '{$id}'); return false;">5</a></li>
+		</ul>{$shema}
+	</div>
+</div>
+HTML;
+	
+		return $rated;]]></searchcode>
+			<replacecode><![CDATA[function ShowRating($id, $rating, $vote_num, $allow = true) {
+	global $lang, $config, $row, $dle_module;
+
+	if( !$config['rating_type'] ) {
+		
+		if( $rating AND $vote_num ) $rating = round( ($rating / $vote_num), 0 );
+		else $rating = 0;
+		
+		if ($rating < 0 ) $rating = 0;
+		
+		if ($vote_num AND $dle_module == "showfull") {
+			
+			$shema_title = " itemprop=\"aggregateRating\" itemscope itemtype=\"http://schema.org/AggregateRating\"";
+			$shema_ratig = $rating;
+			$shema_ratig_title = str_replace("&amp;amp;", "&amp;",  htmlspecialchars( strip_tags( stripslashes( $row['title'] ) ), ENT_QUOTES, $config['charset'] ) );
+			$shema = "<meta itemprop=\"itemReviewed\" content=\"{$shema_ratig_title}\"><meta itemprop=\"worstRating\" content=\"1\"><meta itemprop=\"ratingCount\" content=\"{$vote_num}\"><meta itemprop=\"ratingValue\" content=\"{$shema_ratig}\"><meta itemprop=\"bestRating\" content=\"10\">";
+
+		} else {
+			$shema_title = "";
+			$shema = "";
+		}
+	
+      	$rating = $rating * 10;
+      
+		if( !$allow ) {
+		
+			$rated = <<<HTML
+<div class="rating"{$shema_title}>
+		<ul class="unit-rating">
+		<li class="current-rating" style="width:{$rating}%;">{$rating}</li>
+		</ul>{$shema}
+</div>
+HTML;
+		
+			return $rated;
+		}
+	
+		$rated = <<<HTML
+<div id='ratig-layer-{$id}'>
+	<div class="rating"{$shema_title}>
+		<ul class="unit-rating">
+		<li class="current-rating" style="width:{$rating}%;">{$rating}</li>
+		<li><a href="#" title="{$lang['useless']}" class="r1-unit" onclick="doRate('1', '{$id}'); return false;">1</a></li>
+		<li><a href="#" title="{$lang['useless']}" class="r2-unit" onclick="doRate('2', '{$id}'); return false;">2</a></li>
+		<li><a href="#" title="{$lang['useless']}" class="r3-unit" onclick="doRate('3', '{$id}'); return false;">3</a></li>
+		<li><a href="#" title="{$lang['poor']}" class="r4-unit" onclick="doRate('4', '{$id}'); return false;">4</a></li>
+		<li><a href="#" title="{$lang['poor']}" class="r5-unit" onclick="doRate('5', '{$id}'); return false;">5</a></li>
+		<li><a href="#" title="{$lang['fair']}" class="r6-unit" onclick="doRate('6', '{$id}'); return false;">6</a></li>
+		<li><a href="#" title="{$lang['fair']}" class="r7-unit" onclick="doRate('7', '{$id}'); return false;">7</a></li>
+		<li><a href="#" title="{$lang['good']}" class="r8-unit" onclick="doRate('8', '{$id}'); return false;">8</a></li>
+		<li><a href="#" title="{$lang['good']}" class="r9-unit" onclick="doRate('9', '{$id}'); return false;">9</a></li>
+		<li><a href="#" title="{$lang['excellent']}" class="r10-unit" onclick="doRate('10', '{$id}'); return false;">10</a></li>
+		</ul>{$shema}
+	</div>
+</div>
+HTML;
+	
+		return $rated;]]></replacecode>
+		</operation>
+	</file>
+	<file name="engine/ajax/rating.php">
+		<operation action="replace">
+			<searchcode><![CDATA[if( $go_rate > 5 or $go_rate < 1 ) $go_rate = false;]]></searchcode>
+			<replacecode><![CDATA[if( $go_rate > 10 or $go_rate < 1 ) $go_rate = false;]]></replacecode>
+		</operation>
+	</file>
+</dleplugin>

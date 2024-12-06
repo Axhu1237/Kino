@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dleplugin>
+	<name>Увеличение изображений для дополнительного поля &quot;Галерея&quot;</name>
+	<description>Увеличение изображений для дополнительного поля &quot;Галерея&quot; при помощи библиотеки Lightgallery</description>
+	<icon></icon>
+	<version>1.0.0</version>
+	<dleversion>13.1</dleversion>
+	<versioncompare>greater</versioncompare>
+	<upgradeurl></upgradeurl>
+	<filedelete>0</filedelete>
+	<needplugin></needplugin>
+	<mnotice>0</mnotice>
+	<mysqlinstall><![CDATA[]]></mysqlinstall>
+	<mysqlupgrade><![CDATA[]]></mysqlupgrade>
+	<mysqlenable><![CDATA[]]></mysqlenable>
+	<mysqldisable><![CDATA[]]></mysqldisable>
+	<mysqldelete><![CDATA[]]></mysqldelete>
+	<phpinstall><![CDATA[]]></phpinstall>
+	<phpupgrade><![CDATA[]]></phpupgrade>
+	<phpenable><![CDATA[]]></phpenable>
+	<phpdisable><![CDATA[]]></phpdisable>
+	<phpdelete><![CDATA[]]></phpdelete>
+	<notice><![CDATA[]]></notice>
+	<file name="engine/modules/show.full.php">
+		<operation action="replace">
+			<searchcode><![CDATA[$gallery_image[] = "<li><img src=\"{$img_url}\" alt=\"{$temp_alt}\"></li>";]]></searchcode>
+			<replacecode><![CDATA[$gallery_image[] = "<a data-fancybox=\"gallery\" href=\"{$img_url}\"><img src=\"{$img_url}\" alt=\"{$temp_alt}\"></a>";]]></replacecode>
+			<searchcount>2</searchcount>
+		</operation>
+		<operation action="replace">
+			<searchcode><![CDATA[$xfieldsdata[$value[0]] = "<ul class=\"xfieldimagegallery {$value[0]}\">".implode($gallery_image)."</ul>";]]></searchcode>
+			<replacecode><![CDATA[$xfieldsdata[$value[0]] = implode($gallery_image);]]></replacecode>
+			<searchcount>2</searchcount>
+		</operation>
+	</file>
+</dleplugin>
